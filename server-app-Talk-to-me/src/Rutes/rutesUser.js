@@ -19,3 +19,10 @@ routerUser.post("/singup",async (req,res)=>{
   handleSingUp(req.body,res)
   
 })
+
+
+routerUser.get("/user/groups/:iduser", async (req,res)=>{
+
+  const idUser = req.params.iduser
+  
+})

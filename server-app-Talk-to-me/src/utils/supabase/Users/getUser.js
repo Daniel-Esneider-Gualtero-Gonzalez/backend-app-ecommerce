@@ -23,3 +23,5 @@ export async function getUser(nameuser) {
         return error
     }
 }
+
+// D:\backend-app-talk-to-me\server-app-Talk-to-me\src\utils\supabase\Users\getUser.js

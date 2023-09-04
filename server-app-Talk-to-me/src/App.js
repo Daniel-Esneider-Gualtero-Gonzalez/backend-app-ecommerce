@@ -1,5 +1,5 @@
 import {createServer} from 'http'
-import {WebSocketServer} from 'ws'
+import {Server} from 'socket.io'
 import express from 'express'
 
 
@@ -11,6 +11,7 @@ import { routerUser } from './Rutes/rutesUser.js'
 
 import { fileURLToPath } from 'url';
 import path from 'path';
+import { Console } from 'console';
 
 
 const __filename = fileURLToPath(import.meta.url);
@@ -20,8 +21,8 @@ const __dirname = path.dirname(__filename);
 //  fin de la crear dirname ya que no esta en los modulos ecmascript 
 
 
-
 const userCrea = {names:"sabiduria",username:"hol@",password:"holalllñ"}
+
  
  const app = express() // se encarga de manejar rutas midlewares y demas que llegan al host server
  
@@ -35,19 +36,19 @@ const userCrea = {names:"sabiduria",username:"hol@",password:"holalllñ"}
   next();
 });
 
-
  const serverHttp = createServer(app) // maneja las conexiones crea el host 
- const wsServer = new WebSocketServer({server:serverHttp})
+ 
+ export const ioSocket = new Server(serverHttp,{
+  connectionStateRecovery: {
+    maxDisconnectionDuration: 2 * 60 *1000 ,
+    skipMiddlewares : true,
+  },
+  cors:{
+    origin:'http://127.0.0.1:5173'  // habilitamos las cors para que puedan conectarse
+  }
+ })
 
- wsServer.on('connection', function connection(ws) {
-  wsServer.on('error', console.error);
-
-  wsServer.on('message', function message(data) {
-    console.log('received: %s', data);
-  });
-
-  ws.send('something');
-});
+ 
 
 //  APLICACION EXPRESS
 
@@ -58,12 +59,10 @@ app.use(routerUser)
 
 
 
-app.get("/message/:message",(req,res)=>{
-  res.send(req.params)
-})
-
 app.get("/chat",(req,res)=>{
 
+   // se puedde responder tambien cuando hagan peticiones http
+  ioSocket.emit("request",{message:"hola request"})
   res.sendFile(__dirname + "/index.html")
 })
 
@@ -73,4 +72,37 @@ app.get("/chat",(req,res)=>{
 
 serverHttp.listen(3000,()=>{
     console.log(" servidor on http://localhost:3000")
+})
+
+
+
+
+// APP WEBSOCKETS
+
+
+
+ioSocket.on("connection",(socket)=>{
+  console.log("recovered", socket.recovered)
+
+  console.log("cliente conectado")
+
+  socket.on('disconnect', () => {
+    console.log('Cliente desconectado')
+  })
+
+
+  socket.on("my-event",(data)=>{
+    console.log("mensaje de mi evento", data)
+  })
+
+
+  socket.on("writing",(data)=>{
+    
+    if (data.value===true) {
+      socket.emit("writing",{value:true,message:data.message})
+    }else{
+      socket.emit("writing",false)
+    }
+  })
+
 })
