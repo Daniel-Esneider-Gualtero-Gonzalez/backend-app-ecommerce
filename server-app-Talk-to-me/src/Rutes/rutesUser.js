@@ -3,7 +3,9 @@ import {Router}  from 'express'
 // Manejadores de Ruta de Usuario
 import { handleLogin } from '../controllers/loginController.js'
 import { handleSingUp } from '../controllers/loginController.js'
+import { handleUserGroups } from '../controllers/GroupsCotroller.js'
 //FIN FIN DE Manejadores de Ruta de Usuario
+
 
 
 
@@ -21,8 +23,12 @@ routerUser.post("/singup",async (req,res)=>{
 })
 
 
-routerUser.get("/user/groups/:iduser", async (req,res)=>{
 
+
+
+routerUser.get("/user/groups/:iduser", async (req,res)=>{
   const idUser = req.params.iduser
+
+  handleUserGroups(idUser,res)
   
 })
