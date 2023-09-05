@@ -4,8 +4,8 @@ import {Router}  from 'express'
 import { handleLogin } from '../controllers/loginController.js'
 import { handleSingUp } from '../controllers/loginController.js'
 import { handleUserGroups } from '../controllers/GroupsCotroller.js'
+import { handleGroupCreate } from '../controllers/GroupsCotroller.js'
 //FIN FIN DE Manejadores de Ruta de Usuario
-
 
 
 
@@ -20,6 +20,15 @@ routerUser.post("/singup",async (req,res)=>{
     // manejador de registro
   handleSingUp(req.body,res)
   
+})
+
+
+routerUser.post("/user/groups/create/", async (req,res)=>{
+  if (Object.keys(req.body).length < 1) return res.status(400).json({
+    "error": "Solicitud incompleta. Debe proporcionar los datos necesarios para crear el grupo."
+  })
+
+  handleGroupCreate(req.body,res)
 })
 
 

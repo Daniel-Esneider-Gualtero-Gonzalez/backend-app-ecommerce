@@ -16,7 +16,7 @@ export async function inserUser(data) {
     
         return {message:"Usuario crado exitosamente"}
     } catch (error) {
-        return error
+        return {error:"Error al crear el usuario"}
     }
 }
 
