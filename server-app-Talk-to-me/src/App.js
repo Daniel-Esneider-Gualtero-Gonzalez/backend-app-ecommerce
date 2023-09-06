@@ -2,9 +2,11 @@ import {createServer} from 'http'
 import {Server} from 'socket.io'
 import express from 'express'
 
-
-
+// importaciones de routers
 import { routerUser } from './Rutes/rutesUser.js'
+import { routerPosters } from './Rutes/rutesPosters.js'
+// fin de importaciones de routers
+
 
 
 //  crear dirname ya que no esta en los modulos ecmascript 
@@ -56,6 +58,9 @@ app.use(express.json())
 
 // todas la rutas que tenga que ver con el usuario
 app.use(routerUser)
+
+// todas las rutas de posters
+app.use(routerPosters)
 
 
 

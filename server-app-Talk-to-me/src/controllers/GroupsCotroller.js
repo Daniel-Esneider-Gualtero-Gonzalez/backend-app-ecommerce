@@ -38,7 +38,8 @@ export async function handleGroupCreate(data,res) {
   // devuelve el id del grupo creado si todo es succes 
   const group = await createGroup(data)
   
-  if (group.error) return res.status(500).json(response)
+ 
+  if (group.error) return res.status(500).json({message:"Error al crear el grupo"})
 
   
   //insercion en la tabla users_groups pasamos id del usuario y el id nuevo grupo creado
