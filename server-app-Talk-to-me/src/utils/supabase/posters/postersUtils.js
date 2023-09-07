@@ -1,11 +1,12 @@
-import { supabaseClient } from "../../../CRUD/conexion";
+import { supabaseClient } from "../../../CRUD/conexion.js";
 
-export async function createPoster(iduser,title,description) {
+export async function createPoster(dataposter) {
     
+    const {id_user,title,description} = dataposter
 
     try {
         const {data,error} = await supabaseClient.from('posters').insert({
-            iduser,title, description
+            id_user,title, description
         }).select('id')
         if(error) throw Error("Error al crear el poster")
         
@@ -19,6 +20,8 @@ export async function createPoster(iduser,title,description) {
 
 
 export function cretePosterCategories(posterid,listcategories) {
+
+    
     // creamos la estructura  para insertarlos a la tabla intermedia
     const posterCategories = listcategories.map(cateid =>{
         return {poster_id:posterid,category_id:cateid}
@@ -34,4 +37,17 @@ export function cretePosterCategories(posterid,listcategories) {
         return false
     }
 
+}
+
+
+export async function categoriPosterExist(categories) {
+
+    try {
+        const {error} = await supabaseClient.from('categories_poster').select('id').in(categories)
+        // tengo que comparar que el id de las categorias que me envien
+        // se encuentre en las categorias de la bd que me arrojo
+    } catch (error) {
+        
+    }
+    
 }

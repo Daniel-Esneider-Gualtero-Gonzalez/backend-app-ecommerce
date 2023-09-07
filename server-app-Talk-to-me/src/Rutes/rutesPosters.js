@@ -5,6 +5,9 @@ import { validateCreatePoster } from "../midlewares/posters/postersMidlewares.js
 
 // fin de midlewares de posters
 
+// Handlers de las rutas de posters
+import { handleCreatePoster } from "../controllers/postersController.js";
+
 
 
 
@@ -37,8 +40,4 @@ routerPosters.get("/posters/comments/all/:iduser",(req,res)=>{
 
 // METODO:  POST
 
-routerPosters.post("/posters/create", validateCreatePoster ,async (req,res)=>{
-
-    
-
-})
+routerPosters.post("/posters/create", validateCreatePoster ,handleCreatePoster)
