@@ -13,7 +13,7 @@ import { routerPosters } from './Rutes/rutesPosters.js'
 
 import { fileURLToPath } from 'url';
 import path from 'path';
-import { Console } from 'console';
+
 
 
 const __filename = fileURLToPath(import.meta.url);
