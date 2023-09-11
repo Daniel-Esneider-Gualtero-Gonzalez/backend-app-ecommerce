@@ -1,5 +1,43 @@
 import { supabaseClient } from "../../../CRUD/conexion.js";
 
+
+// function utils gets de posters
+
+export async function getAllPosters() {
+    
+    try {
+        const {data,error}= await supabaseClient.from('posters').select()
+
+        if (error) throw Error("Error al obtener todos los posters")
+
+        return data
+    } catch (error) {
+
+        return {error:"Error al obtener todos los posters"}
+    }
+}
+
+export async function getPostersByUser(iduser) {
+    
+    try {
+        const {data,error} = await supabaseClient.from('posters').select().eq('id_user',iduser)
+
+        if (error) throw Error("Error al obtener  los posters del usuario")
+
+
+        return data
+    } catch (error) {
+
+        return {error:"Error al obtener  los posters del usuario"}
+    }
+}
+
+
+
+
+
+
+//  funtion que crea un poster
 export async function createPoster(dataposter) {
     
     const {id_user,title,description} = dataposter
@@ -26,11 +64,11 @@ export async function createPosterCategories(posterid,listcategories) {
     const posterCategories = listcategories.map(cateid =>{
         return {poster_id:posterid,category_id:cateid}
     })
-     console.log("estructure insert categories", posterCategories)
+     
     try {
         const {error} = await supabaseClient.from('poster_category').insert(posterCategories)
 
-        console.log("error", error)
+        
         if(error) throw Error("Error al crear las categorias del poster")
         
 
