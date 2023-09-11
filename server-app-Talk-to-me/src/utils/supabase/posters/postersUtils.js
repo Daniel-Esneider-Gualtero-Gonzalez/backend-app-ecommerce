@@ -24,7 +24,6 @@ export async function getPostersByUser(iduser) {
 
         if (error) throw Error("Error al obtener  los posters del usuario")
 
-
         return data
     } catch (error) {
 
@@ -56,7 +55,7 @@ export async function createPoster(dataposter) {
     }
 }
 
-
+//  crea las categorias de un poster
 export async function createPosterCategories(posterid,listcategories) {
 
     
@@ -80,7 +79,7 @@ export async function createPosterCategories(posterid,listcategories) {
 
 }
 
-
+// verifica que las categorias de posters existen
 export async function categoriPosterExist(categories) {
 
     try {
@@ -100,4 +99,41 @@ export async function categoriPosterExist(categories) {
         return {error:"Error al agregar categorias al poster"}
     }
     
+}
+
+// crea un comentario para el poster
+
+export async function createPosterComment(idposter,comment) {
+    
+    try {
+        const {error} = await supabaseClient.from('posters_comentaries').insert({
+            poster_id: idposter,
+            comment:comment
+        })
+
+        if(error) throw Error("Error al crear el comentario")
+
+        return {success: "Comentario creado exitosamente"}
+
+    } catch (error) {
+        return {error:"Error al crear el comentario"}
+    }
+}
+
+
+
+//  verifica si un poster existe
+
+export async function posterExist(idposter) {
+    
+    try {
+        const {data,error} = await supabaseClient.from('posters').select().eq('id',idposter)
+
+        if (error) throw Error("Error al verificar si el poster existe")
+
+        return data.length > 0 ? true : false
+
+    } catch (error) {
+        return {error: "Error al verificar si el poster existe"}
+    }
 }
