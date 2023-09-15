@@ -2,6 +2,25 @@ import {createServer} from 'http'
 import {Server} from 'socket.io'
 import express from 'express'
 
+// importaciones de sockets
+function getUserSendMessage(userconects,iduser) {
+    
+  for (const iterator of userconects) {
+      
+      if (iterator.iduser === iduser) return iterator
+  }
+
+  return false
+}
+
+
+// fin importaciones de sockets
+
+
+
+
+
+
 // importaciones de routers
 import { routerUser } from './Rutes/rutesUser.js'
 import { routerPosters } from './Rutes/rutesPosters.js'
@@ -84,30 +103,45 @@ serverHttp.listen(3000,()=>{
 
 // APP WEBSOCKETS
 
+const allUsersConnect = new Set([])
+let allUserMessages = []
+
 
 
 ioSocket.on("connection",(socket)=>{
-  console.log("recovered", socket.recovered)
 
   console.log("cliente conectado")
+  // console.log("socket id DENTRO DE EVENTO PRICIPAL DE CONECCCION", socket.id)
 
-  socket.on('disconnect', () => {
-    console.log('Cliente desconectado')
-  })
-
-
-  socket.on("my-event",(data)=>{
-    console.log("mensaje de mi evento", data)
-  })
+  
 
 
-  socket.on("writing",(data)=>{
+  // evento cuando se conecta un usuario y guadamos sus datos en un array de user
+
+  socket.on("dataUserConnect",(data)=>{
+   
+    // Que cuando se conecte enviarles todos los mensajes almacenados
     
-    if (data.value===true) {
-      socket.emit("writing",{value:true,message:data.message})
-    }else{
-      socket.emit("writing",false)
-    }
+
+    // añadimos los datos del usuario y conexion 
+    allUsersConnect.add({socketid:socket.id, ...data})
+    console.log("client conectaddos",allUsersConnect)
   })
+
+  // Evento cuando el usuario envia un mensaje
+  // recibimos guardamos y enviamos
+  socket.on("message",(data)=>{
+    
+    allUserMessages = [...allUserMessages,data]
+    
+    // enviamos al cliente esto mas el nombre de usuario que lo envio
+    const whoSendMessage = getUserSendMessage(allUsersConnect,data.iduser)
+    const {username} = whoSendMessage
+   
+    ioSocket.emit("message",{...data,username})
+
+    
+  })
+
 
 })
