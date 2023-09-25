@@ -1,5 +1,9 @@
 
 import {Router}  from 'express'
+
+// midlewares devalidar props
+import { validateDataAuthUser } from '../midlewares/user/userMidlewares.js'
+// fin de midlewares de validar props
 // Manejadores de Ruta de Usuario
 import { handleLogin } from '../controllers/loginController.js'
 import { handleSingUp } from '../controllers/loginController.js'
@@ -11,7 +15,7 @@ import { handleGroupCreate } from '../controllers/GroupsCotroller.js'
 
 export const routerUser = Router()
 
-routerUser.post("/login",async (req,res)=>{
+routerUser.post("/login", validateDataAuthUser ,async (req,res)=>{
  handleLogin(req.body,res)
 })
 
