@@ -24,7 +24,10 @@ export async function handleLogin(credencials, response) {
     if (autenti) {
       
         //    enviamos el token con el payload del user recuperado
-        let userToken = jwt.sign(user, process.env.JWTSECRET, { expiresIn: "1m" })
+
+        const {id,created_at,names,last_name,correo} = user
+
+        let userToken = jwt.sign({id,created_at,names,last_name,correo}, process.env.JWTSECRET, { expiresIn: "1m" })
         return response.status(200).json({ token: userToken, message: 'Inicio de sesión exitoso' })
 
     } else {

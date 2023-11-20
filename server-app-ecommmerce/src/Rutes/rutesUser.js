@@ -3,6 +3,7 @@ import {Router}  from 'express'
 
 // midlewares devalidar props
 import { validateDataAuthUser } from '../midlewares/user/userMidlewares.js'
+import { validatePropRecharge } from '../midlewares/transaction/transactionMidlewares.js'
 // fin de midlewares de validar props
 // Manejadores de Ruta de Usuario
 import { handleLogin, handleRefrestToken } from '../controllers/loginController.js'
@@ -10,7 +11,16 @@ import { handleSingUp } from '../controllers/loginController.js'
 import { handleUserGroups } from '../controllers/GroupsCotroller.js'
 import { handleGroupCreate } from '../controllers/GroupsCotroller.js'
 import { getHandleAvatarController } from '../controllers/avatarController.js'
+import transactionControllers from '../controllers/transactionControllers.js'
+import serviceTransaction from '../services/serviceTransaction.js'
+
+
+
+
 //FIN FIN DE Manejadores de Ruta de Usuario
+
+// servicios que es una clase con controladores como metodos
+
 
 
 
@@ -31,6 +41,29 @@ routerUser.post("/singup",async (req,res)=>{
 
 // ruta para obtener los avatares de esta app
 routerUser.get("/avatars/", getHandleAvatarController)
+
+
+// ruta para traer el saldo del usuario
+routerUser.get("/user/balance/:iduser",  transactionControllers.handleGetBalanceUser)
+
+// ruta para recargar el saldo del usuario
+routerUser.post("/user/balance/recharge/", validatePropRecharge ,async (req,res)=>{
+
+  
+  // recuperamos los valores que necesitamos del body ya que el midleware las asegura que vienen
+  const {user_id,amount} = req.body
+
+   const recharge = await serviceTransaction.rechargeBalance(user_id,amount)
+
+   if(recharge.error){
+    return res.status(500).json({message:"Error al recargar saldo"})
+   }
+  
+  
+
+})
+
+
 
 
 routerUser.post("/user/groups/create/", async (req,res)=>{
