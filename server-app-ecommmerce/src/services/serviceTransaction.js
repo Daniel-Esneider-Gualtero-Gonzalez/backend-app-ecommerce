@@ -137,6 +137,20 @@ class ServiceTransaction {
         return { success: "Exito al crear el balance del usuario", balance: data[0] }
     }
 
+
+    
+    async getUserBalance (user_id){
+        const {error,data} = await supabaseClient.from("user_balance").select("balance").eq('user_id',user_id)
+
+        if(error){
+            return {error: "Error al obtener el balance del usuario"}
+        }
+
+        return data[0]
+        
+    }
+    
+
 }
 
 export default new ServiceTransaction()

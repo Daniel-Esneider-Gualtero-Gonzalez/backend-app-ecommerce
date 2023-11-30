@@ -43,9 +43,6 @@ const __dirname = path.dirname(__filename);
 
 //  fin de la crear dirname ya que no esta en los modulos ecmascript 
 
-
-const userCrea = {names:"sabiduria",username:"hol@",password:"holalllñ"}
-
  
  const app = express() // se encarga de manejar rutas midlewares y demas que llegan al host server
  

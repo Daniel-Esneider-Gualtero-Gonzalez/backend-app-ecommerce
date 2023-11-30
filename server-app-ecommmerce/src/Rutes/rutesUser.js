@@ -44,24 +44,10 @@ routerUser.get("/avatars/", getHandleAvatarController)
 
 
 // ruta para traer el saldo del usuario
-routerUser.get("/user/balance/:iduser",  transactionControllers.handleGetBalanceUser)
+routerUser.get("/user/balance/",  transactionControllers.handleGetBalanceUser)
 
 // ruta para recargar el saldo del usuario
-routerUser.post("/user/balance/recharge/", validatePropRecharge ,async (req,res)=>{
-
-  
-  // recuperamos los valores que necesitamos del body ya que el midleware las asegura que vienen
-  const {user_id,amount} = req.body
-  
-   const recharge = await serviceTransaction.rechargeBalance(user_id,amount,"recharge")
-
-   if(recharge.error){
-    return res.status(500).json({message:"Error al recargar saldo"})
-   }
-  
-  
-
-})
+routerUser.post("/user/balance/recharge/", validatePropRecharge ,transactionControllers.handleRechargeBalance)
 
 
 
