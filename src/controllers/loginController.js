@@ -27,7 +27,7 @@ export async function handleLogin(credencials, response) {
 
         const {id,created_at,names,last_name,correo} = user
 
-        let userToken = jwt.sign({id,created_at,names,last_name,correo}, process.env.JWTSECRET, { expiresIn: "1m" })
+        let userToken = jwt.sign({id,created_at,names,last_name,correo}, process.env.JWTSECRET, { expiresIn: "12h" })
         return response.status(200).json({ token: userToken, message: 'Inicio de sesión exitoso' })
 
     } else {

@@ -1,5 +1,8 @@
 import { createServer } from "http"
 import { app } from "./src/App.js"
+import dotenv from 'dotenv'
+
+dotenv.config()
 
 const serverHttp = createServer(app) // maneja las conexiones crea el host 
  

@@ -1,9 +1,7 @@
 import {createServer} from 'http'
 import {Server} from 'socket.io'
 import express from 'express'
-import dotenv from 'dotenv'
 
-dotenv.config()
 // importaciones de sockets
 function getUserSendMessage(userconects,iduser) {
     
