@@ -1,12 +1,12 @@
 {
-  "name": "Backend app ecommercer",
+  "name": "Backend of app my-eccomerce",
   "version": "1",
   "description": "this is backend of the app my-ecommerce",
   "main": "app.js",
   "type": "module",
   "scripts": {
-    "start" : "node ./src/App.js ",
-    "dev" : "node ./src/App.js",
+    "start" : "node index.js ",
+    "dev" : "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Daniel g",
